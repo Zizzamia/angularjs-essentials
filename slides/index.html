@@ -1,0 +1,98 @@
+<!doctype html>  
+<html lang="en" ng-app="tasteAngulajs">
+  <head>
+    <meta charset="utf-8">
+    
+    <title>AngularJS Essentials: Javascript framework for superheroes</title>
+
+    <meta name="description" content="A step-by-step presentaion on AngularJS">
+    <meta name="author" content="Leonardo Zizzamia | @zizzamia">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/protractor.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+    	document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+        <section>
+          <h1 style="margin: 50px 0 .3em">AngularJS Essentials</h1>
+          <h3 style="font-size:1.2em;margin-bottom:2em">Javascript framework for superheroes</h3>
+          <p>
+            <a href="https://github.com/zizzamia">@zizzamia</a>
+          </p>
+        </section>
+
+      </div> 
+    </div>
+
+    <iframe src="http://ghbtns.com/github-btn.html?user=zizzamia&repo=angularjs-essentials&type=watch&count=true" 
+    allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20" 
+    style="position: absolute; top: 20px; left: 20px; z-index: 9999"></iframe>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
+
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      	controls: true,
+      	progress: true,
+      	history: true,
+      	rollingLinks: false,
+      	
+      	theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      	transition: 'fade', // default/cube/page/concave/linear(2d)
+      	mouseWheel : false,
+
+      	// Optional libraries used to extend on reveal.js
+      	dependencies: [
+      		{ src: 'lib/js/highlight.js', async: true, callback: function() { window.hljs.initHighlightingOnLoad(); } },
+      		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      		{ src: 'lib/js/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      		{ src: 'lib/js/data-markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      		{ src: 'plugin/zoom-js/zoom.js', condition: function() { return !!document.body.classList; } },
+      		{ src: '/socket.io/socket.io.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+      		{ src: 'plugin/speakernotes/client.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } }
+      	]
+      });
+    </script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/ng-tasty/ng-tasty-tpls.min.js"></script>
+    <script src="js/zepto.min.js"></script>
+    <script>
+      angular.module('tasteAngulajs', ['ngTasty'])
+      .factory('items', function () {
+        
+      })
+      .controller('tasteController', function($scope, items) {
+        
+      })
+      .controller('awesomeController', function($scope, items) {
+        
+      });
+    </script>
+  </body>
+</html>

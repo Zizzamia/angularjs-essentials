@@ -44,6 +44,160 @@
           </p>
         </section>
 
+        <section>
+          <h2 class="slide-header"
+          style="font-size:3em;margin-top: 50px">Useful Directives</h2>
+        </section>
+
+        <section>
+          <h2><code>ngClass</code></h2>
+        </section>
+
+        <section>
+          <h2><code>ngIf</code></h2>
+        </section>
+
+        <section>
+          <h2><code>ngRepeat</code></h2>
+          <ul>
+            <li>$index</li>
+            <li>$first</li>
+            <li>$middle</li>
+            <li>$last</li>
+            <li>$even</li>
+            <li>$odd</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="slide-header"
+          style="font-size:3em;margin-top: 50px">Creating Filters</h2>
+        </section>
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Custom filter<p>
+
+          <input type="text" ng-model="myReverseInput" />
+          <p ng-bind="myReverseInput | reverse"></p>
+
+        </section>
+
+        <section>
+          <h2 class="slide-header"
+          style="font-size:3em;margin-top: 50px">Scope and Controller</h2>
+        </section>
+
+        <section>
+          <h2><code>watch</code></h2>
+          <p>watch</p>
+          <p>$watchCollection</p>
+          <p>Deep watch</p>
+        </section>
+
+        <section>
+          <h2 class="slide-header"
+          style="font-size:3em;margin-top: 50px">Creating Directives</h2>
+        </section>
+
+        <section>
+          <h2><code>template</code></h2>
+        </section>
+
+        <section>
+          <h2><code>templateUrl</code></h2>
+        </section>
+
+        <section>
+          <h2><code>restrict</code></h2>
+        </section>
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Basic Directive<p>
+
+          <my-directive></my-directive>
+
+        </section> 
+
+        <section>
+          <h2><code>link</code></h2>
+        </section>
+
+        <section>
+          <h2><code>$destroy</code></h2>
+        </section>
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Directive with element<p>
+        </section> 
+
+        <section>
+          <h2><code>scope</code></h2>
+        </section>
+
+        <section>
+          <h2><code>scope true</code></h2>
+        </section>
+
+        <section>
+          <h2>Isolate scope</h2>
+        </section>
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Directive with isolate scope<p>
+        </section> 
+
+        <section>
+          <h2><code>transclude</code></h2>
+        </section>
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Directive that wraps arbitrary content<p>
+        </section> 
+
+        <section>
+          <h2><code>controller</code></h2>
+        </section>
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Directive that communicate<p>
+        </section> 
+
+        <section>
+          <h2><code>angular.element</code></h2>
+        </section>
+
+        <section>
+          <h2><code>replace</code></h2>
+        </section>
+
+        <section>
+          <h2><code>compile</code></h2>
+        </section>
+
+        <section>
+          <h2 class="slide-header"
+          style="font-size:3em;margin-top: 50px">Providers</h2>
+        </section>
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Implement a provider<p>
+        </section> 
+
+        <section>
+          <h3>Tasty lab</h3>
+          <p>Implement a decorator<p>
+        </section>
+
+        <section>
+          <h2><code>ngAnnotate</code></h2>
+        </section>
       </div> 
     </div>
 
@@ -55,6 +209,7 @@
     <script src="js/reveal.min.js"></script>
 
     <script>
+      var d = document; 
       // Full list of configuration options available here:
       // https://github.com/hakimel/reveal.js#configuration
       Reveal.initialize({
@@ -70,10 +225,10 @@
       	// Optional libraries used to extend on reveal.js
       	dependencies: [
       		{ src: 'lib/js/highlight.js', async: true, callback: function() { window.hljs.initHighlightingOnLoad(); } },
-      		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      		{ src: 'lib/js/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      		{ src: 'lib/js/data-markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      		{ src: 'plugin/zoom-js/zoom.js', condition: function() { return !!document.body.classList; } },
+      		{ src: 'lib/js/classList.js', condition: function() { return !d.body.classList; } },
+      		{ src: 'lib/js/showdown.js', condition: function() { return !!d.querySelector( '[data-markdown]' ); } },
+      		{ src: 'lib/js/data-markdown.js', condition: function() { return !!d.querySelector( '[data-markdown]' ); } },
+      		{ src: 'plugin/zoom-js/zoom.js', condition: function() { return !!d.body.classList; } },
       		{ src: '/socket.io/socket.io.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
       		{ src: 'plugin/speakernotes/client.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } }
       	]
@@ -84,8 +239,19 @@
     <script src="js/zepto.min.js"></script>
     <script>
       angular.module('tasteAngulajs', ['ngTasty'])
-      .factory('items', function () {
-        
+      .filter('reverse', function() {
+        return function (input) {
+          if (!input) {
+            return '';
+          }
+          return input.split('').reverse().join('');
+        }
+      })
+      .directive('myDirective', function () {
+        return {
+          restrict: 'E',
+          template: '<div>Leo</div>'
+        }
       })
       .controller('tasteController', function($scope, items) {
         

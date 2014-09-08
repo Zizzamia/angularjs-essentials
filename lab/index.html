@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html ng-app="tasteAngulajs">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body class="container" ng-controller="tasteController">
+
+  <div>
+    <h3>First Lab</h3>
+    <input type="text" name="input" class="form-control" 
+    ng-model="data.displayName" placeholder="Insert name" />
+
+    <h5 ng-bind="data.displayName | reverse"></h5>
+  </div>
+
+  <hr />
+  
+  <div>
+    <h3>Second Lab</h3>
+    <input type="text" name="input" class="form-control" 
+    ng-model="data.displayName" placeholder="Insert name" />
+
+    <h3 ng-bind="data.displayName | reverse"></h3>
+
+    <display-name-one></display-name-one>
+  </div>
+
+  <hr />
+
+  <div>
+    <h3>Three Lab</h3>
+    <input type="text" name="input" class="form-control" 
+    ng-model="data.displayName" placeholder="Insert name" />
+
+    <h5 display-name-two name="Mario" icon="globe"></h5>
+  </div>
+
+  <hr />
+
+  <div>
+    <h3>Four Lab</h3>
+    <input type="text" name="input" class="form-control" 
+    ng-model="data.displayName" placeholder="Insert name" />
+
+    <div display-name-three name="data.displayName" 
+    icon="globe" action="logName(name)"></div>
+  </div>
+
+  <hr />
+
+  <div>
+    <h3>Five Lab</h3>
+    <input type="text" name="input" class="form-control" 
+    ng-model="data.displayName" placeholder="Insert name" />
+
+    <div display-name-four name="data.displayName">
+      <p>Super Mario Bros</p>
+    </div>
+  </div>
+
+  <hr />
+
+  <div>
+    <h3>Six Lab</h3>
+    <input type="text" name="input" class="form-control" 
+    ng-model="data.displayName" placeholder="Insert name" />
+
+    <div display-name-five name="data.displayName" fire>
+      <p>Super Mario Bros</p>
+    </div>
+
+    <div display-name-five name="data.displayName" fire fly>
+      <p>Super Mario Bros</p>
+    </div>
+  </div>
+          
+  <script>
+    angular.module('tasteAngulajs', [
+      'filter.reverse',
+      'directive.displayName'
+    ])
+    .controller('tasteController', function($scope) {
+      $scope.data = {
+        'displayName': ''
+      };
+
+      $scope.logName = function (name) {
+        console.log('Name : ' + name);
+      };
+    });
+
+    angular.module('filter.reverse', [])
+    .filter('reverse', function() {
+      return function (input) {
+        if (!input) {
+          return '';
+        }
+        return input.split('').reverse().join('');
+      }
+    });
+
+    angular.module('directive.displayName', [])
+    .directive('displayNameOne', function() {
+      return {
+        'restrict': 'E',
+        'template': '<h3>Leonardo Zizzamia</h3>'
+      }
+    })
+    .directive('displayNameTwo', function() {
+      return {
+        restrict: 'A',
+        template: '<h3 ng-bind="name"></h3>',
+        link: function (scope, element, attrs) {
+          scope.name = attrs.name;
+          element.bind('mouseenter', function () {
+            element.addClass('glyphicon glyphicon-' + attrs.icon);
+          });
+          element.bind('mouseleave', function () {
+            element.removeClass('glyphicon glyphicon-' + attrs.icon);
+          });
+        }
+      }
+    })
+    .directive('displayNameThree', function() {
+      return {
+        restrict: 'A',
+        scope: {
+          'name': '=',
+          'icon': '@',
+          'action': '&'
+        },
+        template: '<h3 ng-bind="name"></h3>' + 
+          '<button class="btn btn-default" ' +
+          'ng-click="action({name:name})">Action</button>',
+        link: function (scope, element, attrs) {
+          element.bind('mouseenter', function () {
+            element.addClass('glyphicon glyphicon-' + scope.icon);
+          });
+          element.bind('mouseleave', function () {
+            element.removeClass('glyphicon glyphicon-' + scope.icon);
+          });
+        }
+      }
+    })
+    .directive('displayNameFour', function() {
+      return {
+        restrict: 'A',
+        scope: {
+          'name': '='
+        },
+        transclude: true,
+        template: '<div class="panel panel-default">' +
+          '<div class="panel-heading" ng-bind="name"></div>' +
+          '<div class="panel-body" ng-transclude>' +
+          '</div>' +
+        '</div>',
+        link: function (scope, element, attrs) {
+        }
+      }
+    })
+    .directive('displayNameFive', function() {
+      return {
+        restrict: 'A',
+        scope: {
+          'name': '='
+        },
+        template: '<div class="panel panel-default">' +
+          '<div class="panel-heading" ng-bind="name"></div>' +
+          '<div class="panel-body">' +
+            '<ul><li ng-repeat="power in powers">{{ power }}</li></ul>' +
+          '</div>' +
+        '</div>',
+        controller: function($scope) {
+          $scope.powers = [];
+          this.addFire = function() {
+            $scope.powers.push("fire");
+          };
+          this.addFly = function() {
+            $scope.powers.push("fly");
+          };
+        },
+        link: function (scope, element, attrs) {
+        }
+      }
+    })
+    .directive("fire", function() {
+      return {
+        require: "displayNameFive",
+        link: function(scope, element, attrs, displayNameFiveCtrl) {
+          displayNameFiveCtrl.addFire();
+        }
+      }
+    })
+    .directive("fly", function() {
+      return {
+        require: "displayNameFive",
+        link: function(scope, element, attrs, displayNameFiveCtrl) {
+          displayNameFiveCtrl.addFly();
+        }
+      }
+    })
+  </script>
+</body>
+</html>

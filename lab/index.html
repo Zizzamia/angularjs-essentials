@@ -38,30 +38,55 @@
     angular.module('tasteAngulajs', [
       'tasteAngulajs.api',
       'tasteAngulajs.timeline',
+      'tasteAngulajs.filters',
       'tasteAngulajs.controllers'
     ])
+    .config(function (timelineAPIProvider) {
+      timelineAPIProvider.setUsername('zizzamia');
+    })
     .constant('placeholder', {
-      'insertTweet': 'Che c\'e\' di nuovo?',
-      'insertUsername': 'Insert username'
+      'insertTweet': 'Che c\'e\' di nuovo?'
+    })
+
+
+    angular.module('tasteAngulajs.filters', [])
+    .filter('fromNow', function () {
+      return function (value) {
+        return moment(value).fromNow();
+      }
     })
 
 
     angular.module('tasteAngulajs.api', [])
-    .factory('timelineAPI', function () {
-      var listTweets = [
-      {'username': 'zizzamia', 'text': 'Ciao'},
-      {'username': 'zizzamia', 'text': 'Ciao due'}];
+    .provider('timelineAPI', function () {
+      var username = '';
       return {
-        'get': function () {
-          return listTweets;
+        setUsername: function (value) {
+          username = value
         },
-        'create': function (tweet) {
-          listTweets.push(tweet);
-        },
-        'remove': function (index) {
+        $get: function () {
+          var listTweets = [
+            { 'username': username, 'text': 'Ciao', 'timestamp': 1410474730056 },
+            { 'username': username, 'text': 'Ciao due', 'timestamp': 1410474617870 }
+          ];
+          return {
+            'get': function () {
+              return listTweets;
+            },
+            'create': function (text) {
+              var tweet = {
+                'username': username,
+                'text': text,
+                'timestamp': Date.now()
+              };
+              listTweets.splice(0, 0, tweet);
+            },
+            'remove': function (index) {
 
+            }
+          };
         }
-      };
+      }
     })
 
 
@@ -91,7 +116,6 @@
         '      <input class="form-control" placeholder="{{ placeholder.insertTweet }}" />'+
         '    </div>'+
         '    <div ng-if="isOpenBox">'+
-        '      <input class="form-control" placeholder="{{ placeholder.insertUsername }}" />'+
         '      <textarea ng-model="tweet.text" class="form-control" rows="3"></textarea>'+
         '      <button type="button" class="btn btn-info btn-sm" '+
         '      ng-click="writeTweet()">Tweet</button>'+
@@ -108,11 +132,7 @@
           };
 
           scope.writeTweet = function () {
-            playload = {
-              'username': scope.tweet.username,
-              'text': scope.tweet.text
-            };
-            timelineAPI.create(playload);
+            timelineAPI.create(scope.tweet.text);
             scope.tweet = {};
             scope.isOpenBox = false;
             //timeline.getTimeline();
@@ -140,7 +160,10 @@
         template: '<div class="tweet">'+
         '  <div class="tweet-content">'+
         '    <img src="https://pbs.twimg.com/profile_images/455960725656059905/UhxENS0I_normal.jpeg" alt="">'+
-        '    <div class="header">{{ data.username }}</div>'+
+        '    <div class="header">'+
+        '     {{ data.username }}'+
+        '     <i class="time">{{ data.timestamp | fromNow }}</i>'+
+        '    </div>'+
         '    <p>'+
         '      {{ data.text }}'+
         '      <button type="button" class="btn btn-default btn-xs">'+

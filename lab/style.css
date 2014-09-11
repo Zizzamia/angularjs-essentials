@@ -116,6 +116,10 @@ Home style
   font-size: 14px;
   font-weight: bold;
 }
+.timeline .tweet  .time {
+  font-size: 12px;
+  color: #8899a6;
+}
 .timeline button {
   float: right;
 }

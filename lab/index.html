@@ -4,203 +4,164 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="container" ng-controller="tasteController">
 
-  <div>
-    <h3>First Lab</h3>
-    <input type="text" name="input" class="form-control" 
-    ng-model="data.displayName" placeholder="Insert name" />
+  <header>
+    <nav>
+      <div class="inner">
+        <img src="../assets/twitter_logo_blue.png" height="20" />
+      </div>
+    </nav>
+  </header>
 
-    <h5 ng-bind="data.displayName | reverse"></h5>
+  <div timeline class="content">
+    <tweet-box write="writeTweet()"></tweet-box>
+    <tweets-container>
+      <tweet data="tweet" remove="removeTweet($index)" 
+      ng-repeat="tweet in listTweets"></tweet>
+    </tweets-container>
   </div>
 
-  <hr />
-  
-  <div>
-    <h3>Second Lab</h3>
-    <input type="text" name="input" class="form-control" 
-    ng-model="data.displayName" placeholder="Insert name" />
-
-    <h3 ng-bind="data.displayName | reverse"></h3>
-
-    <display-name-one></display-name-one>
-  </div>
-
-  <hr />
-
-  <div>
-    <h3>Three Lab</h3>
-    <input type="text" name="input" class="form-control" 
-    ng-model="data.displayName" placeholder="Insert name" />
-
-    <h5 display-name-two name="Mario" icon="globe"></h5>
-  </div>
-
-  <hr />
-
-  <div>
-    <h3>Four Lab</h3>
-    <input type="text" name="input" class="form-control" 
-    ng-model="data.displayName" placeholder="Insert name" />
-
-    <div display-name-three name="data.displayName" 
-    icon="globe" action="logName(name)"></div>
-  </div>
-
-  <hr />
-
-  <div>
-    <h3>Five Lab</h3>
-    <input type="text" name="input" class="form-control" 
-    ng-model="data.displayName" placeholder="Insert name" />
-
-    <div display-name-four name="data.displayName">
-      <p>Super Mario Bros</p>
-    </div>
-  </div>
-
-  <hr />
-
-  <div>
-    <h3>Six Lab</h3>
-    <input type="text" name="input" class="form-control" 
-    ng-model="data.displayName" placeholder="Insert name" />
-
-    <div display-name-five name="data.displayName" fire>
-      <p>Super Mario Bros</p>
-    </div>
-
-    <div display-name-five name="data.displayName" fire fly>
-      <p>Super Mario Bros</p>
-    </div>
-  </div>
+  <footer>
+    <p>
+      A tasty beginning Web Dev with 
+      <a href="http://angularjs.org/" target="_blank">AngularJS</a> by 
+      <a href="https://twitter.com/" target="_blank">@zizzamia</a>
+    </p>
+    <code>ng-class</code>
+  </footer>
           
   <script>
     angular.module('tasteAngulajs', [
-      'filter.reverse',
-      'directive.displayName'
+      'tasteAngulajs.api',
+      'tasteAngulajs.timeline',
+      'tasteAngulajs.controllers'
     ])
-    .controller('tasteController', function($scope) {
-      $scope.data = {
-        'displayName': ''
+    .constant('placeholder', {
+      'insertTweet': 'Che c\'e\' di nuovo?',
+      'insertUsername': 'Insert username'
+    })
+
+
+    angular.module('tasteAngulajs.api', [])
+    .factory('timelineAPI', function () {
+      var listTweets = [
+      {'username': 'zizzamia', 'text': 'Ciao'},
+      {'username': 'zizzamia', 'text': 'Ciao due'}];
+      return {
+        'get': function () {
+          return listTweets;
+        },
+        'create': function (tweet) {
+          listTweets.push(tweet);
+        },
+        'remove': function (index) {
+
+        }
       };
+    })
 
-      $scope.logName = function (name) {
-        console.log('Name : ' + name);
-      };
-    });
 
-    angular.module('filter.reverse', [])
-    .filter('reverse', function() {
-      return function (input) {
-        if (!input) {
-          return '';
-        }
-        return input.split('').reverse().join('');
-      }
-    });
-
-    angular.module('directive.displayName', [])
-    .directive('displayNameOne', function() {
-      return {
-        'restrict': 'E',
-        'template': '<h3>Leonardo Zizzamia</h3>'
-      }
-    })
-    .directive('displayNameTwo', function() {
+    angular.module('tasteAngulajs.timeline', [])
+    .directive('timeline', function(timelineAPI){
       return {
         restrict: 'A',
-        template: '<h3 ng-bind="name"></h3>',
-        link: function (scope, element, attrs) {
-          scope.name = attrs.name;
-          element.bind('mouseenter', function () {
-            element.addClass('glyphicon glyphicon-' + attrs.icon);
-          });
-          element.bind('mouseleave', function () {
-            element.removeClass('glyphicon glyphicon-' + attrs.icon);
-          });
-        }
-      }
-    })
-    .directive('displayNameThree', function() {
-      return {
-        restrict: 'A',
-        scope: {
-          'name': '=',
-          'icon': '@',
-          'action': '&'
-        },
-        template: '<h3 ng-bind="name"></h3>' + 
-          '<button class="btn btn-default" ' +
-          'ng-click="action({name:name})">Action</button>',
-        link: function (scope, element, attrs) {
-          element.bind('mouseenter', function () {
-            element.addClass('glyphicon glyphicon-' + scope.icon);
-          });
-          element.bind('mouseleave', function () {
-            element.removeClass('glyphicon glyphicon-' + scope.icon);
-          });
-        }
-      }
-    })
-    .directive('displayNameFour', function() {
-      return {
-        restrict: 'A',
-        scope: {
-          'name': '='
-        },
-        transclude: true,
-        template: '<div class="panel panel-default">' +
-          '<div class="panel-heading" ng-bind="name"></div>' +
-          '<div class="panel-body" ng-transclude>' +
-          '</div>' +
-        '</div>',
-        link: function (scope, element, attrs) {
-        }
-      }
-    })
-    .directive('displayNameFive', function() {
-      return {
-        restrict: 'A',
-        scope: {
-          'name': '='
-        },
-        template: '<div class="panel panel-default">' +
-          '<div class="panel-heading" ng-bind="name"></div>' +
-          '<div class="panel-body">' +
-            '<ul><li ng-repeat="power in powers">{{ power }}</li></ul>' +
-          '</div>' +
-        '</div>',
+        scope: true,
         controller: function($scope) {
-          $scope.powers = [];
-          this.addFire = function() {
-            $scope.powers.push("fire");
+          $scope.listTweets = [];
+          this.getTimeline = function () {
+            $scope.listTweets = timelineAPI.get();
           };
-          this.addFly = function() {
-            $scope.powers.push("fly");
+          this.getTimeline(); 
+        }
+      };
+    })
+    .directive('tweetBox', function(timelineAPI, placeholder){
+      return {
+        restrict: 'E',
+        scope: true,
+        require: '^timeline',
+        template: '<div class="timeline-tweet-box">'+
+        '  <div class="home-tweet-box">'+
+        '    <img src="https://pbs.twimg.com/profile_images/455960725656059905/UhxENS0I_normal.jpeg" alt="">'+
+        '    <div ng-if="!isOpenBox" ng-click="openBox()">'+
+        '      <input class="form-control" placeholder="{{ placeholder.insertTweet }}" />'+
+        '    </div>'+
+        '    <div ng-if="isOpenBox">'+
+        '      <input class="form-control" placeholder="{{ placeholder.insertUsername }}" />'+
+        '      <textarea ng-model="tweet.text" class="form-control" rows="3"></textarea>'+
+        '      <button type="button" class="btn btn-info btn-sm" '+
+        '      ng-click="writeTweet()">Tweet</button>'+
+        '    </div>'+
+        '  </div>'+
+        '</div>',
+        link: function(scope, element, attrs, timeline) {
+          scope.tweet = {};
+          scope.isOpenBox = false;
+          scope.placeholder = placeholder;
+
+          scope.openBox = function () {
+            scope.isOpenBox = true;
           };
+
+          scope.writeTweet = function () {
+            playload = {
+              'username': scope.tweet.username,
+              'text': scope.tweet.text
+            };
+            timelineAPI.create(playload);
+            scope.tweet = {};
+            scope.isOpenBox = false;
+            //timeline.getTimeline();
+          };
+        }
+      };
+    })
+    .directive('tweetsContainer', function(timelineAPI){
+      return {
+        restrict: 'E',
+        scope: true,
+        replace: true,
+        template: '<div class="list-group timeline" ng-transclude>'+
+        '</div>',
+        transclude: true
+      };
+    })
+    .directive('tweet', function(){
+      return {
+        restrict: 'E',
+        scope: {
+          'data': '=',
+          'removeTweet': '&remove'
         },
-        link: function (scope, element, attrs) {
+        template: '<div class="tweet">'+
+        '  <div class="tweet-content">'+
+        '    <img src="https://pbs.twimg.com/profile_images/455960725656059905/UhxENS0I_normal.jpeg" alt="">'+
+        '    <div class="header">{{ data.username }}</div>'+
+        '    <p>'+
+        '      {{ data.text }}'+
+        '      <button type="button" class="btn btn-default btn-xs">'+
+        '        <span class="fa fa-remove" ng-click="removeTweet($index)"></span>'+
+        '      </button>'+
+        '    </p>'+
+        '  </div>'+
+        '</div>',
+        link: function(scope, element, attrs) {
         }
-      }
+      };
     })
-    .directive("fire", function() {
-      return {
-        require: "displayNameFive",
-        link: function(scope, element, attrs, displayNameFiveCtrl) {
-          displayNameFiveCtrl.addFire();
-        }
-      }
-    })
-    .directive("fly", function() {
-      return {
-        require: "displayNameFive",
-        link: function(scope, element, attrs, displayNameFiveCtrl) {
-          displayNameFiveCtrl.addFly();
-        }
-      }
-    })
+
+
+    angular.module('tasteAngulajs.controllers', [])
+    .controller('tasteController', function($scope, timelineAPI) {
+      $scope.removeTweet = function (index) {
+        timelineAPI.remove(index);
+        $scope.listTweets = timelineAPI.get();
+      };
+    });
   </script>
 </body>
 </html>

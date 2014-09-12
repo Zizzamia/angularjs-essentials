@@ -149,10 +149,22 @@
 
 
         <section>
+          <h2><code>restrict</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweet', function(){
+    return {
+      restrict: 'E'
+    };
+  })</code></pre>
+        </section>
+
+
+        <section>
           <h2><code>template</code></h2>
           <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
   .directive('tweet', function(){
     return {
+      restrict: 'E',
       template: '&lt;div class="tweet"&gt;&lt;/div&gt;'
     };
   })</code></pre>
@@ -164,18 +176,8 @@
           <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
   .directive('tweet', function(){
     return {
-      template: '&lt;div class="tweet"&gt;&lt;/div&gt;'
-    };
-  })</code></pre>
-        </section>
-
-
-        <section>
-          <h2><code>restrict</code></h2>
-          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
-  .directive('tweet', function(){
-    return {
-      template: '&lt;div class="tweet"&gt;&lt;/div&gt;'
+      restrict: 'A',
+      templateUrl: 'my-template.html'
     };
   })</code></pre>
         </section>
@@ -188,39 +190,89 @@
 
 
         <section>
-          <h2><code>link</code></h2>
+          <h2><code>angular.element</code></h2>
         </section>
-        
+
+
+        <section>
+          <h2><code>link</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweet', function(){
+    return {
+      restrict: 'A',
+      templateUrl: 'my-template.html',
+      link: function(scope, element, attrs) {
+      }
+    };
+  })</code></pre>
+        </section>
+
 
         <section>
           <h3>Tasty lab</h3>
-          <p>Directive with element<p>
+          <p>Add some action to the directive by using `link`<p>
         </section> 
 
 
         <section>
           <h2><code>scope</code></h2>
-        </section>
-
-
-        <section>
-          <h2><code>scope true</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweet', function(){
+    return {
+      restrict: 'A',
+      scope: true,
+      templateUrl: 'my-template.html',
+      link: function(scope, element, attrs) {
+      }
+    };
+  })</code></pre>
         </section>
 
 
         <section>
           <h2>Isolate scope</h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweet', function(){
+    return {
+      restrict: 'A',
+      scope: {
+        'data': '=',
+        'removeTweet': '&remove',
+        'removeButtonColor': '@'
+      },
+      template: '&lt;div class="tweet"&gt;'+
+      '  &lt;div class="tweet-content"&gt;'+
+      '    {{ data.text }}'+
+      '    &lt;button type="button" class="btn btn-default btn-xs"&gt;'+
+      '      &lt;span class="fa fa-remove {{ removeButtonColor }}" '+
+      '      ng-click="removeTweet($index)"&gt;&lt;/span&gt;'+
+      '    &lt;/button&gt;'+
+      '  &lt;/div&gt;'+
+      '&lt;/div&gt;'
+    };
+  })</code></pre>
         </section>
 
 
         <section>
           <h3>Tasty lab</h3>
           <p>Directive with isolate scope<p>
-        </section> 
+        </section>
 
 
         <section>
-          <h2><code>transclude</code></h2>
+          <h2><code>transclude</code> & <code>replace</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweetsContainer', function(timelineAPI){
+    return {
+      restrict: 'E',
+      scope: true,
+      replace: true,
+      template: '&lt;div class="list-group timeline" ng-transclude&gt;'+
+      '&lt;/div&gt;',
+      transclude: true
+    };
+  })</code></pre>
         </section>
 
 
@@ -232,28 +284,27 @@
 
         <section>
           <h2><code>controller</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('timeline', function(timelineAPI){
+    return {
+      restrict: 'A',
+      scope: true,
+      controller: function($scope) {
+        $scope.listTweets = [];
+        this.getTimeline = function () {
+          $scope.listTweets = timelineAPI.get();
+        };
+        this.getTimeline(); 
+      }
+    };
+  })</code></pre>
         </section>
 
 
         <section>
           <h3>Tasty lab</h3>
-          <p>Directive that communicate<p>
+          <p>Write a directive that expose an API to other directives<p>
         </section> 
-
-
-        <section>
-          <h2><code>angular.element</code></h2>
-        </section>
-
-
-        <section>
-          <h2><code>replace</code></h2>
-        </section>
-
-
-        <section>
-          <h2><code>compile</code></h2>
-        </section>
 
 
         <section>
@@ -263,7 +314,33 @@
 
 
         <section>
+          <h2><code>provider</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .provider('timelineAPI', function () {
+    var username = '';
+    return {
+      setUsername: function (value) {
+        username = value
+      },
+      $get: function () {
+        var listTweets = [
+          { 'username': username, 'text': 'Ciao', 'timestamp': 1410474730056 },
+          { 'username': username, 'text': 'Ciao due', 'timestamp': 1410474617870 }
+        ];
+        return {
+          'get': function () {
+            return listTweets;
+          }, ...
+        };
+      }
+    }
+  })</code></pre>
+        </section>
+
+
+        <section>
           <h2><code>Providers</code> <code>Factory</code> <code>Service</code></h2>
+          <a href="http://stackoverflow.com/questions/15666048/service-vs-provider-vs-factory">http://stackoverflow.com/questions/15666048/service-vs-provider-vs-factory</a>
         </section>
 
 
@@ -274,7 +351,13 @@
 
 
         <section>
-          <h2><code>ngAnnotate</code></h2>
+          <h2 class="slide-header"
+          style="font-size:3em;margin-top: 50px">ngAnnotate</h2>
+          <br />
+          <br />
+          <a href="https://github.com/olov/ng-annotate">
+            https://github.com/olov/ng-annotate
+          </a>
         </section>
 
 
@@ -293,8 +376,8 @@
           <h2 class="slide-header">Learning Resources</h2>
           <ul>
             <li>
-              <a href="http://zizzamia.github.io/taste-of-angularjs/" target="_blank">
-                zizzamia.github.io/taste-of-angularjs
+              <a href="https://github.com/Zizzamia/angularjs-essentials" target="_blank">
+                zizzamia.github.io/angularjs-essentials
               </a>
             </li>
             <li>
@@ -311,6 +394,34 @@
               <a href="https://egghead.io/technologies/angularjs?order=ASC" target="_blank">
                 egghead.io
               </a>
+            </li>
+          </ul>
+        </section>
+
+
+        <section>
+          <h2 class="slide-header">Who follow</h2>
+          <ul>
+            <li>
+              <a href="https://twitter.com/mhevery" target="_blank">@mhevery</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/IgorMinar" target="_blank">@IgorMinar</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/bradlygreen" target="_blank">@bradlygreen</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/toddmotto" target="_blank">@toddmotto</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/briantford" target="_blank">@briantford</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/ngconf" target="_blank">@ngconf</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/SomeJulie" target="_blank">@SomeJulie</a>
             </li>
           </ul>
         </section>

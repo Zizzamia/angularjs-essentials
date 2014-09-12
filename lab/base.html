@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="tasteAngulajs">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="container" ng-controller="tasteController">
+
+  <header>
+    <nav>
+      <div class="inner">
+        <img src="../assets/twitter_logo_blue.png" height="20" />
+      </div>
+    </nav>
+  </header>
+
+  <div timeline class="content">
+    <div class="timeline-tweet-box">
+      <div class="home-tweet-box">
+        <img src="https://pbs.twimg.com/profile_images/455960725656059905/UhxENS0I_normal.jpeg" alt="">
+        <div ng-if="!isOpenBox" ng-click="openBox()">
+          <input class="form-control" placeholder="{{ placeholder.insertTweet }}" />
+        </div>
+        <div ng-if="isOpenBox">
+          <textarea ng-model="tweet.text" class="form-control" rows="3"></textarea>
+          <button type="button" class="btn btn-info btn-sm" 
+          ng-click="writeTweet()">Tweet</button>
+        </div>
+      </div>
+    </div>
+    <div class="list-group timeline">
+      <div class="tweet" ng-repeat="tweet in listTweets">
+        <div class="tweet-content">
+          <img src="https://pbs.twimg.com/profile_images/455960725656059905/UhxENS0I_normal.jpeg" alt="">
+          <div class="header">
+           {{ tweet.username }}
+           <i class="time">{{ tweet.timestamp }}</i>
+          </div>
+          <p>
+            {{ tweet.text }}
+            <button type="button" class="btn btn-default btn-xs">
+              <span class="fa fa-remove" ng-click="removeTweet($index)"></span>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Directives
+    <code>ng-class</code> <code>ng-if</code> <code>ng-repeat</code> <code>ng-repeat</code> <br />
+    Custom directive confgs
+    <code>restrict</code> <code>template</code> <code>link</code> <code>scope</code>
+    <code>transclude</code> <code>replace</code> <code>controller</code>
+  </footer>
+          
+  <script>
+    angular.module('tasteAngulajs', [
+      'tasteAngulajs.filters',
+      'tasteAngulajs.controllers'
+    ])
+
+    angular.module('tasteAngulajs.filters', [])
+
+    angular.module('tasteAngulajs.controllers', [])
+    .controller('tasteController', function($scope) {
+      $scope.listTweets = [
+        { 'username': 'zizzamia', 'text': 'Ciao', 'timestamp': 1410474730056 },
+        { 'username': 'zizzamia', 'text': 'Ciao due', 'timestamp': 1410474617870 }
+      ];
+    });
+  </script>
+</body>
+</html>

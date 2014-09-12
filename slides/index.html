@@ -51,15 +51,40 @@
         </section>
 
 
-        <section>
+        <section ng-controller="tasteController">
           <h2><code>ngClass</code></h2>
-          {strike: deleted, bold: important, red: error}
-          by function
+          <pre ng-non-bindable><code class="html">&lt;div ng-controller="tasteController"&gt;
+  &lt;span ng-class="{uppercase: uppercase, green: success, tomato: error}"&gt;Map Syntax&lt;/span&gt;
+  &lt;span ng-class="[uppercaseClass, successClass]"&gt; - Array Syntax - &lt;/span&gt;
+  &lt;span ng-class="getMyClass()"&gt;Callback Syntax&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs', [])
+.controller('tasteController', function($scope) {
+  $scope.uppercaseClass = 'text-uppercase';
+  $scope.successClass = 'green';
+  $scope.getMyClass = function () {
+    return ['uppercase', 'red'];
+  }
+});</code></pre>
+          <span ng-class="{uppercase: uppercase, green: success, tomato: error}">Map Syntax</span>
+          <span ng-class="[uppercaseClass, successClass]"> - Array Syntax - </span>
+          <span ng-class="getMyClass()">Callback Syntax</span><br />
+          <input type="checkbox" ng-model="uppercase"> uppercase 
+          <input type="checkbox" ng-model="success"> success 
+          <input type="checkbox" ng-model="error"> error
         </section>
 
 
         <section>
           <h2><code>ngIf</code></h2>
+          <pre ng-non-bindable><code class="html">Click me: &lt;input type="checkbox" ng-model="checked" ng-init="checked=true" /&gt;&lt;br /&gt;
+&lt;span ng-if="checked"&gt;
+  I'm removed when the checkbox is unchecked.
+&lt;/span&gt;</code></pre>
+          Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /><br/>
+          <span ng-if="checked" class="animate-if">
+            I'm removed when the checkbox is unchecked.
+          </span>
         </section>
 
 
@@ -82,13 +107,19 @@
         </section>
 
         <section>
-          <h2><code>filter</code></h2>
+          <h2><code>angular.filter</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .filter('helloWorld', function () {
+    return function (value) {
+      return 'Hello ' + value;
+    }
+  })</code></pre>
         </section>
 
 
         <section>
           <h3>Tasty lab</h3>
-          <p>Custom filter<p>
+          <p>Write a custom filter<p>
         </section>
 
 
@@ -100,9 +131,14 @@
 
         <section>
           <h2><code>watch</code></h2>
-          <p>watch</p>
-          <p>Deep watch</p>
-          <p>$watchCollection</p>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .controller('tasteCtrl', function () {
+    $scope.$watch(…, …);
+
+    $scope.$watchCollection(…, …);
+
+    $scope.$watch(…, …, true);
+  })</code></pre>
         </section>
 
 
@@ -114,16 +150,34 @@
 
         <section>
           <h2><code>template</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweet', function(){
+    return {
+      template: '&lt;div class="tweet"&gt;&lt;/div&gt;'
+    };
+  })</code></pre>
         </section>
 
 
         <section>
           <h2><code>templateUrl</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweet', function(){
+    return {
+      template: '&lt;div class="tweet"&gt;&lt;/div&gt;'
+    };
+  })</code></pre>
         </section>
 
 
         <section>
           <h2><code>restrict</code></h2>
+          <pre ng-non-bindable><code class="javascript">angular.module('tasteAngulajs.filters', [])
+  .directive('tweet', function(){
+    return {
+      template: '&lt;div class="tweet"&gt;&lt;/div&gt;'
+    };
+  })</code></pre>
         </section>
 
 
@@ -136,12 +190,7 @@
         <section>
           <h2><code>link</code></h2>
         </section>
-
-
-        <section>
-          <h2><code>$destroy</code></h2>
-        </section>
-
+        
 
         <section>
           <h3>Tasty lab</h3>
@@ -329,16 +378,14 @@
           return input.split('').reverse().join('');
         }
       })
-      .directive('myDirective', function () {
-        return {
-          restrict: 'E',
-          template: '<div>Leo</div>'
+      .controller('tasteController', function($scope) {
+        $scope.uppercaseClass = 'text-uppercase';
+        $scope.successClass = 'green';
+        $scope.getMyClass = function () {
+          return ['uppercase', 'tomato'];
         }
       })
-      .controller('tasteController', function($scope, items) {
-        
-      })
-      .controller('awesomeController', function($scope, items) {
+      .controller('awesomeController', function($scope) {
         
       });
     </script>

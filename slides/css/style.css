@@ -1,3 +1,17 @@
+.bold {
+  font-weight: bold;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.green {
+  color: green;
+}
+.tomato {
+  color: tomato;
+}
+
+
 mark,
 .mark {
   padding: .2em;
